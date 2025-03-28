@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tacet - Unified Customer Analytics Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.6/mermaid.min.js"></script>
+    <style>
+        .section {
+            scroll-margin-top: 80px;
+        }
+        .mermaid {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h3 code {
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans">
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-lg sticky-nav">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-3xl font-bold mr-2">TACET</h1>
+                    <span class="bg-indigo-500 text-xs px-2 py-1 rounded-full">Technical Overview</span>
+                </div>
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li><a href="#overview" class="hover:text-indigo-200 transition">Overview</a></li>
+                        <li><a href="#architecture" class="hover:text-indigo-200 transition">Architecture</a></li>
+                        <li><a href="#data-models" class="hover:text-indigo-200 transition">Data Models</a></li>
+                        <li><a href="#api-endpoints" class="hover:text-indigo-200 transition">API Endpoints</a></li>
+                        <li><a href="#implementation" class="hover:text-indigo-200 transition">Implementation Plan</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+<body class="bg-gray-100 text-gray-900 font-sans">
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-lg sticky-nav">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-3xl font-bold mr-2">TACET</h1>
+                    <span class="bg-indigo-500 text-xs px-2 py-1 rounded-full">Technical Overview</span>
+                </div>
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li><a href="#overview" class="hover:text-indigo-200 transition">Overview</a></li>
+                        <li><a href="#architecture" class="hover:text-indigo-200 transition">Architecture</a></li>
+                        <li><a href="#data-models" class="hover:text-indigo-200 transition">Data Models</a></li>
+                        <li><a href="#api-endpoints" class="hover:text-indigo-200 transition">API Endpoints</a></li>
+                        <li><a href="#implementation" class="hover:text-indigo-200 transition">Implementation Plan</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 content">
+        <!-- Project Overview -->
+        <section id="overview" class="mb-16 section">
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">Unified Customer Analytics Platform</h2>
+                
+                <p class="mb-4">Tacet is a comprehensive solution that integrates all merchant data (Shopify, ads, CRM) and uses AI to predict customer lifetime value. Unlike generic analytics tools, it tells you which marketing moves drive true long-term growth.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 text-indigo-700">
+                            <i class="fas fa-database mr-2"></i>Unified Customer Data Platform
+                        </h3>
+                        <p>Connect all marketing tools and customer data sources into one centralized platform for a complete view of the customer journey.</p>
+                        <ul class="mt-2 ml-5 list-disc text-sm">
+                            <li>Real-time data synchronization across platforms</li>
+                            <li>Automated data cleaning and standardization</li>
+                            <li>Custom data mapping and transformation</li>
+                            <li>Historical data import and analysis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 text-indigo-700">
+                            <i class="fas fa-chart-line mr-2"></i>AI-Powered Attribution Models
+                        </h3>
+                        <p>Move beyond last-click attribution with sophisticated AI models that accurately measure the impact of each marketing touchpoint.</p>
+                        <ul class="mt-2 ml-5 list-disc text-sm">
+                            <li>Multi-touch attribution across channels</li>
+                            <li>Predictive LTV modeling</li>
+                            <li>Custom attribution windows</li>
+                            <li>Channel interaction analysis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 text-indigo-700">
+                            <i class="fas fa-users mr-2"></i>Customer Segmentation Engine
+                        </h3>
+                        <p>Automatically identify and track high-value customer segments based on behavior patterns and purchase history.</p>
+                        <ul class="mt-2 ml-5 list-disc text-sm">
+                            <li>Dynamic segment creation</li>
+                            <li>Behavioral cohort analysis</li>
+                            <li>Predictive churn modeling</li>
+                            <li>Custom segment rules</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 text-indigo-700">
+                            <i class="fas fa-bullseye mr-2"></i>Campaign Performance Analytics
+                        </h3>
+                        <p>Track and optimize marketing performance with comprehensive analytics that focus on long-term customer value.</p>
+                        <ul class="mt-2 ml-5 list-disc text-sm">
+                            <li>Real-time performance tracking</li>
+                            <li>Custom goal setting and monitoring</li>
+                            <li>Automated performance alerts</li>
+                            <li>Cross-channel ROAS analysis</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-10">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-tasks mr-2"></i>Development Phases
+                    </h3>
+                    
+                    <div class="relative">
+                        <!-- Phase timeline -->
+                        <div class="hidden sm:block w-1 bg-indigo-200 absolute h-full left-1/2 transform -translate-x-1/2"></div>
+                        
+                        <!-- Phase 1 -->
+                        <div class="relative mb-8">
+                            <div class="flex items-center mb-2">
+                                <div class="hidden sm:flex w-1/2 justify-end pr-8">
+                                    <div class="bg-indigo-600 text-white rounded-lg p-3 shadow-md">
+                                        <h4 class="font-bold text-lg">Phase 1: Foundation</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 1-4</p>
+                                    </div>
+                                </div>
+                                <div class="hidden sm:block z-10 bg-indigo-600 border-4 border-white rounded-full h-8 w-8"></div>
+                                <div class="sm:w-1/2 sm:pl-8">
+                                    <div class="sm:hidden bg-indigo-600 text-white rounded-lg p-3 shadow-md mb-2">
+                                        <h4 class="font-bold text-lg">Phase 1: Foundation</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 1-4</p>
+                                    </div>
+                                    <ul class="list-disc ml-5 text-sm">
+                                        <li>Set up cloud infrastructure and DevOps pipeline</li>
+                                        <li>Implement core data models and database schema</li>
+                                        <li>Build data connectors for primary sources</li>
+                                        <li>Develop basic ETL pipelines for data normalization</li>
+                                        <li>Create foundational API endpoints for data access</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Phase 2 -->
+                        <div class="relative mb-8">
+                            <div class="flex items-center mb-2">
+                                <div class="sm:w-1/2 sm:pr-8">
+                                    <ul class="list-disc ml-5 text-sm sm:text-right">
+                                        <li>Implement identity resolution system</li>
+                                        <li>Develop real-time data processing pipeline</li>
+                                        <li>Build marketing performance metrics calculation</li>
+                                        <li>Create basic customer segmentation logic</li>
+                                        <li>Implement initial dashboard APIs</li>
+                                    </ul>
+                                </div>
+                                <div class="hidden sm:block z-10 bg-indigo-600 border-4 border-white rounded-full h-8 w-8"></div>
+                                <div class="hidden sm:flex w-1/2 pl-8">
+                                    <div class="bg-indigo-600 text-white rounded-lg p-3 shadow-md">
+                                        <h4 class="font-bold text-lg">Phase 2: Core Features</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 5-8</p>
+                                    </div>
+                                </div>
+                                <div class="sm:hidden w-full">
+                                    <div class="bg-indigo-600 text-white rounded-lg p-3 shadow-md mb-2">
+                                        <h4 class="font-bold text-lg">Phase 2: Core Features</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 5-8</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Phase 3 -->
+                        <div class="relative mb-8">
+                            <div class="flex items-center mb-2">
+                                <div class="hidden sm:flex w-1/2 justify-end pr-8">
+                                    <div class="bg-indigo-600 text-white rounded-lg p-3 shadow-md">
+                                        <h4 class="font-bold text-lg">Phase 3: Advanced Analytics</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 9-12</p>
+                                    </div>
+                                </div>
+                                <div class="hidden sm:block z-10 bg-indigo-600 border-4 border-white rounded-full h-8 w-8"></div>
+                                <div class="sm:w-1/2 sm:pl-8">
+                                    <div class="sm:hidden bg-indigo-600 text-white rounded-lg p-3 shadow-md mb-2">
+                                        <h4 class="font-bold text-lg">Phase 3: Advanced Analytics</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 9-12</p>
+                                    </div>
+                                    <ul class="list-disc ml-5 text-sm">
+                                        <li>Implement LTV prediction models</li>
+                                        <li>Develop customer cohort analysis</li>
+                                        <li>Build attribution modeling system</li>
+                                        <li>Create anomaly detection algorithms</li>
+                                        <li>Implement notification and alerting system</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Phase 4 -->
+                        <div class="relative mb-8">
+                            <div class="flex items-center mb-2">
+                                <div class="sm:w-1/2 sm:pr-8">
+                                    <ul class="list-disc ml-5 text-sm sm:text-right">
+                                        <li>Integrate all data sources</li>
+                                        <li>Optimize data processing pipelines</li>
+                                        <li>Implement caching strategies for performance</li>
+                                        <li>Develop export and reporting functionality</li>
+                                        <li>Build actionable insights generation</li>
+                                    </ul>
+                                </div>
+                                <div class="hidden sm:block z-10 bg-indigo-600 border-4 border-white rounded-full h-8 w-8"></div>
+                                <div class="hidden sm:flex w-1/2 pl-8">
+                                    <div class="bg-indigo-600 text-white rounded-lg p-3 shadow-md">
+                                        <h4 class="font-bold text-lg">Phase 4: Integration & Optimization</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 13-16</p>
+                                    </div>
+                                </div>
+                                <div class="sm:hidden w-full">
+                                    <div class="bg-indigo-600 text-white rounded-lg p-3 shadow-md mb-2">
+                                        <h4 class="font-bold text-lg">Phase 4: Integration & Optimization</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 13-16</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Phase 5 -->
+                        <div class="relative">
+                            <div class="flex items-center mb-2">
+                                <div class="hidden sm:flex w-1/2 justify-end pr-8">
+                                    <div class="bg-indigo-600 text-white rounded-lg p-3 shadow-md">
+                                        <h4 class="font-bold text-lg">Phase 5: Advanced Features</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 17-20</p>
+                                    </div>
+                                </div>
+                                <div class="hidden sm:block z-10 bg-indigo-600 border-4 border-white rounded-full h-8 w-8"></div>
+                                <div class="sm:w-1/2 sm:pl-8">
+                                    <div class="sm:hidden bg-indigo-600 text-white rounded-lg p-3 shadow-md mb-2">
+                                        <h4 class="font-bold text-lg">Phase 5: Advanced Features</h4>
+                                        <p class="text-xs text-indigo-100">Weeks 17-20</p>
+                                    </div>
+                                    <ul class="list-disc ml-5 text-sm">
+                                        <li>Implement advanced customer segmentation</li>
+                                        <li>Develop A/B testing framework</li>
+                                        <li>Build campaign optimization suggestions</li>
+                                        <li>Create performance forecasting models</li>
+                                        <li>Refine ML models based on real data</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 bg-indigo-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-indigo-600">
+                        <i class="fas fa-exclamation-circle mr-2"></i>Key Technical Challenges
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h4 class="font-bold text-indigo-700">Identity Resolution</h4>
+                            <p class="text-sm mt-2">Implementing a probabilistic matching algorithm using email, phone, device IDs, and behavioral patterns with a graph database model for customer identity relationships.</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h4 class="font-bold text-indigo-700">Real-time Data Processing</h4>
+                            <p class="text-sm mt-2">Implementing a Lambda architecture with both batch and stream processing. Using Kafka for real-time event streaming and Spark for batch processing.</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h4 class="font-bold text-indigo-700">Attribution Modeling</h4>
+                            <p class="text-sm mt-2">Developing multi-touch attribution models using machine learning to weight touchpoints, with both rule-based models and advanced algorithmic models.</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h4 class="font-bold text-indigo-700">Predictive LTV Calculation</h4>
+                            <p class="text-sm mt-2">Creating ensemble models combining regression, survival analysis, and deep learning approaches with customer segmentation for improved accuracy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- System Architecture -->
+        <section id="architecture" class="mb-16 section">
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">System Architecture</h2>
+                <p class="mb-6">The architecture is designed to handle data at scale, with a focus on real-time processing, accurate identity resolution, and sophisticated ML models for prediction and analysis.</p>
+                
+                <div class="mermaid">
+flowchart TD
+    subgraph "Data Sources"
+        shopify[Shopify]
+        ga4[Google Analytics 4]
+        fb[Facebook/Meta Ads]
+        google[Google Ads]
+        tiktok[TikTok Ads]
+        klaviyo[Klaviyo]
+        crm[CRM Systems]
+        sms[SMS Platforms]
+        loyalty[Loyalty Programs]
+        custom[Custom Tracking]
+    end
+
+    subgraph "Data Ingestion"
+        shopify --> collector[Data Collector Service]
+        ga4 --> collector
+        fb --> collector
+        google --> collector
+        tiktok --> collector
+        klaviyo --> collector
+        crm --> collector
+        sms --> collector
+        loyalty --> collector
+        custom --> collector
+        
+        collector --> validator[Data Validation]
+        validator --> queue[Message Queue]
+    end
+
+    subgraph "Data Processing"
+        queue --> etl[ETL Processes]
+        etl --> standardization[Data Standardization]
+        standardization --> enrichment[Data Enrichment]
+        enrichment --> identity[Identity Resolution]
+        identity --> aggregation[Data Aggregation]
+    end
+
+    subgraph "Data Storage"
+        aggregation --> raw[Raw Data Lake]
+        aggregation --> warehouse[Data Warehouse]
+        aggregation --> analytics[Analytics Store]
+        warehouse --> metrics[Metrics Store]
+    end
+
+    subgraph "AI/ML Processing"
+        raw --> feature[Feature Engineering]
+        warehouse --> feature
+        feature --> models[ML Models]
+        
+        subgraph "Models"
+            models --> attribution[Attribution Models]
+            models --> ltv[LTV Prediction]
+            models --> segment[Customer Segmentation]
+            models --> churn[Churn Prediction]
+            models --> cohort[Cohort Analysis]
+            models --> anomaly[Anomaly Detection]
+        end
+    end
+
+    subgraph "API Layer"
+        metrics --> api[API Gateway]
+        models --> api
+        
+        api --> dashboard[Dashboard APIs]
+        api --> insights[Insights APIs]
+        api --> notifications[Notifications APIs]
+        api --> export[Export APIs]
+        api --> actions[Action APIs]
+    end
+
+    subgraph "Consumer Applications"
+        dashboard --> ui[UI Dashboard]
+        insights --> ui
+        notifications --> ui
+        export --> ui
+        actions --> ui
+    end
+
+    classDef sourcesSystems fill:#e1f5fe,stroke:#0277bd
+    classDef processingLayer fill:#e8f5e9,stroke:#2e7d32
+    classDef storageLayer fill:#fff8e1,stroke:#ff8f00
+    classDef mlLayer fill:#f3e5f5,stroke:#7b1fa2
+    classDef apiLayer fill:#ede7f6,stroke:#512da8
+    classDef uiLayer fill:#fce4ec,stroke:#c2185b
+    
+    class shopify,ga4,fb,google,tiktok,klaviyo,crm,sms,loyalty,custom sourcesSystems
+    class collector,validator,queue,etl,standardization,enrichment,identity,aggregation processingLayer
+    class raw,warehouse,analytics,metrics storageLayer
+    class feature,models,attribution,ltv,segment,churn,cohort,anomaly mlLayer
+    class api,dashboard,insights,notifications,export,actions apiLayer
+    class ui uiLayer
+                </div>
+            </div>
+        </section>
+        
+        <!-- Data Models -->
+        <section id="data-models" class="mb-16 section">
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">Core Data Models</h2>
+                <p class="mb-6">The platform is built on these essential data models that capture customer behavior, marketing performance, and business metrics.</p>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-user mr-2"></i>Customer Model
+                    </h3>
+                    <pre><code>{
+  "customer_id": "string",
+  "source_id": "string",
+  "source_system": "string",
+  "email": "string",
+  "phone": "string",
+  "first_name": "string",
+  "last_name": "string",
+  "created_at": "timestamp",
+  "first_purchase_date": "timestamp",
+  "last_purchase_date": "timestamp",
+  "total_orders": "integer",
+  "total_spent": "decimal",
+  "average_order_value": "decimal",
+  "predicted_ltv": "decimal",
+  "purchase_frequency": "decimal",
+  "days_since_last_purchase": "integer",
+  "segment_ids": ["string"],
+  "churn_risk_score": "decimal",
+  "equity_score": "decimal",
+  "engagement_score": "decimal",
+  "attributes": {
+    "key": "value"
+  }
+}</code></pre>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-shopping-cart mr-2"></i>Order Model
+                    </h3>
+                    <pre><code>{
+  "order_id": "string",
+  "customer_id": "string",
+  "source_id": "string",
+  "source_system": "string",
+  "created_at": "timestamp",
+  "total_amount": "decimal",
+  "subtotal": "decimal",
+  "tax": "decimal",
+  "shipping": "decimal",
+  "discount": "decimal",
+  "currency": "string",
+  "status": "string",
+  "items": [
+    {
+      "product_id": "string",
+      "variant_id": "string",
+      "quantity": "integer",
+      "price": "decimal",
+      "total": "decimal"
+    }
+  ],
+  "attribution": {
+    "touchpoints": [
+      {
+        "channel": "string",
+        "campaign_id": "string",
+        "timestamp": "timestamp",
+        "contribution_pct": "decimal"
+      }
+    ]
+  }
+}</code></pre>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-ad mr-2"></i>Marketing Performance Model
+                    </h3>
+                    <pre><code>{
+  "date": "date",
+  "channel": "string",
+  "campaign_id": "string",
+  "campaign_name": "string",
+  "ad_set_id": "string",
+  "ad_set_name": "string",
+  "ad_id": "string",
+  "ad_name": "string",
+  "impressions": "integer",
+  "clicks": "integer",
+  "spend": "decimal",
+  "attributed_revenue": "decimal",
+  "attributed_orders": "integer",
+  "attributed_customers": "integer",
+  "ctr": "decimal",
+  "cpc": "decimal",
+  "cpm": "decimal",
+  "roas": "decimal",
+  "cpa": "decimal",
+  "mer": "decimal"
+}</code></pre>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-tags mr-2"></i>Customer Segment Model
+                    </h3>
+                    <pre><code>{
+  "segment_id": "string",
+  "name": "string",
+  "description": "string",
+  "created_at": "timestamp",
+  "updated_at": "timestamp",
+  "customer_count": "integer",
+  "avg_order_value": "decimal",
+  "avg_ltv": "decimal",
+  "avg_purchase_frequency": "decimal",
+  "avg_retention_rate": "decimal",
+  "avg_churn_risk": "decimal",
+  "total_revenue": "decimal",
+  "conditions": [
+    {
+      "field": "string",
+      "operator": "string",
+      "value": "any"
+    }
+  ]
+}</code></pre>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-users-cog mr-2"></i>Customer Cohort Model
+                    </h3>
+                    <pre><code>{
+  "cohort_id": "string",
+  "name": "string",
+  "start_date": "date",
+  "end_date": "date",
+  "base_size": "integer",
+  "metric_values": [
+    {
+      "period": "integer",
+      "retention_rate": "decimal",
+      "revenue": "decimal",
+      "orders": "integer",
+      "ltv": "decimal"
+    }
+  ]
+}</code></pre>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-chart-pie mr-2"></i>Attribution Model
+                    </h3>
+                    <pre><code>{
+  "model_id": "string",
+  "name": "string",
+  "description": "string",
+  "type": "string",
+  "parameters": {
+    "key": "value"
+  },
+  "created_at": "timestamp",
+  "updated_at": "timestamp",
+  "performance_metrics": {
+    "accuracy": "decimal",
+    "confidence": "decimal",
+    "improvement": "decimal"
+  }
+}</code></pre>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-bell mr-2"></i>Notification Model
+                    </h3>
+                    <pre><code>{
+  "notification_id": "string",
+  "type": "string",
+  "severity": "string",
+  "title": "string",
+  "message": "string",
+  "created_at": "timestamp",
+  "read": "boolean",
+  "source_system": "string",
+  "metrics": {
+    "key": "value"
+  },
+  "recommended_action": "string",
+  "impact": {
+    "type": "string",
+    "value": "decimal",
+    "description": "string"
+  }
+}</code></pre>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-heartbeat mr-2"></i>Data Health Model
+                    </h3>
+                    <pre><code>{
+  "source_id": "string",
+  "source_name": "string",
+  "health_score": "decimal",
+  "last_sync": "timestamp",
+  "completeness": "decimal",
+  "issues": [
+    {
+      "type": "string",
+      "description": "string",
+      "impact": "decimal",
+      "recommended_action": "string"
+    }
+  ],
+  "missing_data": [
+    {
+      "field": "string",
+      "count": "integer",
+      "impact": "decimal"
+    }
+  ]
+}</code></pre>
+                </div>
+            </div>
+        </section>
+        
+        <!-- API Endpoints -->
+        <section id="api-endpoints" class="mb-16 section">
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">API Endpoints</h2>
+                <p class="mb-6">The platform exposes these API endpoints to power the frontend application and enable integration with other systems.</p>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-user-check mr-2"></i>Customer Data API
+                    </h3>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Identity Resolution</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/customers/resolve</code></li>
+                        <li><code>POST /api/customers/match</code></li>
+                        <li><code>GET /api/customers/{customer_id}</code></li>
+                        <li><code>GET /api/customers/{customer_id}/timeline</code></li>
+                    </ul>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Customer Segments</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/segments</code></li>
+                        <li><code>POST /api/segments</code></li>
+                        <li><code>GET /api/segments/{segment_id}</code></li>
+                        <li><code>GET /api/segments/{segment_id}/customers</code></li>
+                        <li><code>PUT /api/segments/{segment_id}</code></li>
+                    </ul>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Customer Cohorts</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/cohorts</code></li>
+                        <li><code>POST /api/cohorts</code></li>
+                        <li><code>GET /api/cohorts/{cohort_id}</code></li>
+                        <li><code>GET /api/cohorts/{cohort_id}/analysis</code></li>
+                    </ul>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-chart-line mr-2"></i>Marketing Performance API
+                    </h3>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Performance Metrics</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/performance/metrics</code></li>
+                        <li><code>GET /api/performance/metrics/{metric_id}</code></li>
+                        <li><code>GET /api/performance/channels</code></li>
+                        <li><code>GET /api/performance/channels/{channel_id}</code></li>
+                        <li><code>GET /api/performance/campaigns</code></li>
+                        <li><code>GET /api/performance/campaigns/{campaign_id}</code></li>
+                    </ul>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Attribution Analysis</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/attribution/models</code></li>
+                        <li><code>POST /api/attribution/models</code></li>
+                        <li><code>GET /api/attribution/models/{model_id}</code></li>
+                        <li><code>POST /api/attribution/analyze</code></li>
+                        <li><code>GET /api/attribution/comparison</code></li>
+                    </ul>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-brain mr-2"></i>Analytics & Insights API
+                    </h3>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">LTV Predictions</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/analytics/ltv</code></li>
+                        <li><code>GET /api/analytics/ltv/{customer_id}</code></li>
+                        <li><code>GET /api/analytics/ltv/segments/{segment_id}</code></li>
+                    </ul>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Churn Analysis</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/analytics/churn</code></li>
+                        <li><code>GET /api/analytics/churn/{customer_id}</code></li>
+                        <li><code>GET /api/analytics/churn/risks</code></li>
+                        <li><code>GET /api/analytics/churn/segments/{segment_id}</code></li>
+                    </ul>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">AI Recommendations</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/insights/recommendations</code></li>
+                        <li><code>GET /api/insights/opportunities</code></li>
+                        <li><code>GET /api/insights/risks</code></li>
+                        <li><code>GET /api/insights/anomalies</code></li>
+                    </ul>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-database mr-2"></i>Data Management API
+                    </h3>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Data Health</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/data/health</code></li>
+                        <li><code>GET /api/data/health/{source_id}</code></li>
+                        <li><code>GET /api/data/missing</code></li>
+                        <li><code>GET /api/data/duplicates</code></li>
+                    </ul>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Data Synchronization</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/data/sync/status</code></li>
+                        <li><code>POST /api/data/sync/start</code></li>
+                        <li><code>GET /api/data/sync/history</code></li>
+                    </ul>
+                    
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Data Cleanup</h4>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>POST /api/data/cleanup/duplicates</code></li>
+                        <li><code>POST /api/data/cleanup/missing</code></li>
+                        <li><code>POST /api/data/normalize</code></li>
+                    </ul>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-bell mr-2"></i>Notifications API
+                    </h3>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>GET /api/notifications</code></li>
+                        <li><code>PUT /api/notifications/{notification_id}/read</code></li>
+                        <li><code>GET /api/notifications/critical</code></li>
+                        <li><code>GET /api/notifications/count</code></li>
+                    </ul>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-file-export mr-2"></i>Export API
+                    </h3>
+                    <ul class="bg-gray-100 rounded p-3 text-sm font-mono">
+                        <li><code>POST /api/export/report</code></li>
+                        <li><code>GET /api/export/formats</code></li>
+                        <li><code>GET /api/export/history</code></li>
+                        <li><code>GET /api/export/{export_id}</code></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Implementation Plan -->
+        <section id="implementation" class="mb-16 section">
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">Implementation Plan</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600">
+                        <i class="fas fa-server mr-2"></i>Recommended Technology Stack
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold">Infrastructure & DevOps</h4>
+                            <ul class="mt-2 space-y-1 text-sm">
+                                <li><span class="font-semibold">Cloud Platform:</span> AWS</li>
+                                <li><span class="font-semibold">Infrastructure as Code:</span> Terraform</li>
+                                <li><span class="font-semibold">CI/CD:</span> GitHub Actions</li>
+                                <li><span class="font-semibold">Containerization:</span> Docker + Kubernetes</li>
+                                <li><span class="font-semibold">Monitoring:</span> Prometheus, Grafana</li>
+                                <li><span class="font-semibold">Logging:</span> ELK Stack</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold">Data Processing</h4>
+                            <ul class="mt-2 space-y-1 text-sm">
+                                <li><span class="font-semibold">ETL Framework:</span> Apache Airflow</li>
+                                <li><span class="font-semibold">Stream Processing:</span> Apache Kafka</li>
+                                <li><span class="font-semibold">Batch Processing:</span> Apache Spark</li>
+                                <li><span class="font-semibold">Identity Resolution:</span> Custom + Elasticsearch</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold">Data Storage</h4>
+                            <ul class="mt-2 space-y-1 text-sm">
+                                <li><span class="font-semibold">Data Warehouse:</span> Snowflake</li>
+                                <li><span class="font-semibold">Data Lake:</span> AWS S3 + AWS Glue</li>
+                                <li><span class="font-semibold">Operational Database:</span> MongoDB</li>
+                                <li><span class="font-semibold">Caching Layer:</span> Redis</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold">API & Backend</h4>
+                            <ul class="mt-2 space-y-1 text-sm">
+                                <li><span class="font-semibold">API Gateway:</span> AWS API Gateway</li>
+                                <li><span class="font-semibold">Serverless Functions:</span> AWS Lambda</li>
+                                <li><span class="font-semibold">Application Server:</span> Node.js with Express</li>
+                                <li><span class="font-semibold">Authentication:</span> Auth0 or AWS Cognito</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold">Machine Learning</h4>
+                            <ul class="mt-2 space-y-1 text-sm">
+                                <li><span class="font-semibold">ML Framework:</span> Python + scikit-learn</li>
+                                <li><span class="font-semibold">Feature Store:</span> Feast</li>
+                                <li><span class="font-semibold">Model Serving:</span> MLflow + SageMaker</li>
+                                <li><span class="font-semibold">Time-series:</span> Prometheus + InfluxDB</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold">Frontend</h4>
+                            <ul class="mt-2 space-y-1 text-sm">
+                                <li><span class="font-semibold">Framework:</span> React.js</li>
+                                <li><span class="font-semibold">State Management:</span> Redux</li>
+                                <li><span class="font-semibold">UI Components:</span> Material UI or Tailwind CSS</li>
+                                <li><span class="font-semibold">Visualization:</span> D3.js, Recharts</li>
+                                <li><span class="font-semibold">Real-time Updates:</span> Socket.io</li>
+                            </ul>
+                        </div>
