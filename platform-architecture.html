@@ -67,6 +67,12 @@
       left: 0;
       color: #6366f1;
     }
+    .architecture-diagram {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -78,40 +84,84 @@
       <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
     </header>
 
-    <!-- Architecture Diagram -->
+
+<!-- Architecture Visual Diagram -->
     <section class="mb-16">
-      <h2 class="text-2xl font-bold mb-8 text-center">Architectural Overview</h2>
-      <div class="code-block mb-6 text-center">
-┌─────────────────────────────────────────────────┐
-│                  Client Layer                   │
-│   Svelte Frontend with D3.js/Layercake (SPA)    │
-└───────────────────────┬─────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────┐
-│               API Gateway Layer                 │
-│        FastAPI + Firebase Auth Middleware       │
-└───┬───────────────┬───────────────┬─────────────┘
-    │               │               │
-┌───▼───────┐ ┌─────▼─────┐ ┌───────▼───────┐
-│ Analytics │ │   Data    │ │  Management   │
-│ Services  │ │ Services  │ │   Services    │
-└───┬───────┘ └─────┬─────┘ └───────┬───────┘
-    │               │               │
-┌───▼───────────────▼───────────────▼───────────┐
-│               Domain Layer                    │
-│     Business Logic & Domain Models            │
-└───────────────────┬─────────────────────────┘
-                    │
-┌───────────────────▼─────────────────────────┐
-│          Data Access Layer                  │
-│   Repository Pattern + Data Connectors      │
-└───────────────────┬─────────────────────────┘
-                    │
-┌───────────────────▼─────────────────────────┐
-│           Persistence Layer                 │
-│      PostgreSQL + Caching + Storage         │
-└─────────────────────────────────────────────┘</div>
-      
+      <h2 class="text-2xl font-bold mb-8 text-center">Architecture Visual Overview</h2>
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="800" height="700" viewBox="0 0 800 700" class="architecture-diagram mx-auto">
+          <rect x="0" y="0" width="800" height="700" fill="#ffffff"/>
+          
+          <!-- Client Layer -->
+          <rect x="200" y="40" width="400" height="80" rx="8" ry="8" fill="#c7d2fe" stroke="#4738fb" stroke-width="2"/>
+          <text x="400" y="80" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#312e81">Client Layer</text>
+          <text x="400" y="105" font-family="Arial" font-size="14" text-anchor="middle" fill="#4338ff">Svelte Frontend with D3.js/Layercake (SPA)</text>
+          
+          <!-- API Gateway Layer -->
+          <rect x="200" y="160" width="400" height="80" rx="8" ry="8" fill="#bbdefb" stroke="#1576ff" stroke-width="2"/>
+          <text x="400" y="200" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#0b469f">APIGateway Layer</text>
+          <text x="400" y="225" font-family="Arial" font-size="14" text-anchor="middle" fill="#0d47a1">FastAPI + Firebase Auth Middleware</text>
+          
+          <!-- Services Layer -->
+          <rect x="100" y="280" width="180" height="60" rx="8" ry="8" fill="#c8e6c9" stroke="#388d3d" stroke-width="2"/>
+          <text x="190" y="315" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#0b5e17">Analytics Services</text>
+          
+          <rect x="310" y="280" width="180" height="60" rx="8" ry="8" fill="#c8e6c9" stroke="#388d3d" stroke-width="2"/>
+          <text x="400" y="315" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#0b5e17">Data Services</text>
+          
+          <rect x="520" y="280" width="180" height="60" rx="8" ry="8" fill="#c8e6c9" stroke="#388d3d" stroke-width="2"/>
+          <text x="610" y="315" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#0b5e17">Management Services</text>
+          
+          <!-- Domain Layer -->
+          <rect x="150" y="380" width="500" height="80" rx="8" ry="8" fill="#ffe58f" stroke="#ffbf00" stroke-width="2"/>
+          <text x="400" y="420" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#805b00">Domain Layer</text>
+          <text x="400" y="445" font-family="Arial" font-size="14" text-anchor="middle" fill="#8d6e00">Business Logic &amp; Domain Models</text>
+          
+          <!-- Data Access Layer -->
+          <rect x="150" y="480" width="500" height="80" rx="8" ry="8" fill="#ffccbc" stroke="#ff5722" stroke-width="2"/>
+          <text x="400" y="520" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#c44100">Data Access Layer</text>
+          <text x="400" y="545" font-family="Arial" font-size="14" text-anchor="middle" fill="#e64500">Repository Pattern + Data Connectors</text>
+          
+          <!-- Persistence Layer -->
+          <rect x="150" y="580" width="500" height="80" rx="8" ry="8" fill="#f8bbd0" stroke="#e91e63" stroke-width="2"/>
+          <text x="400" y="620" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#c5155d">Persistence Layer</text>
+          <text x="400" y="645" font-family="Arial" font-size="14" text-anchor="middle" fill="#c40555">PostgreSQL + Caching + Storage</text>
+          
+          <!-- Arrows with proper spacing -->
+          <!-- Client to API Gateway -->
+          <line x1="400" y1="120" x2="400" y2="150" stroke="#333" stroke-width="2"/>
+          <polygon points="400,160 395,150 405,150" fill="#333"/>
+          
+          <!-- API Gateway to Services -->
+          <line x1="300" y1="240" x2="190" y2="270" stroke="#333" stroke-width="2"/>
+          <polygon points="190,280 185,270 195,270" fill="#333"/>
+          
+          <line x1="400" y1="240" x2="400" y2="270" stroke="#333" stroke-width="2"/>
+          <polygon points="400,280 395,270 405,270" fill="#333"/>
+          
+          <line x1="500" y1="240" x2="610" y2="270" stroke="#333" stroke-width="2"/>
+          <polygon points="610,280 605,270 615,270" fill="#333"/>
+          
+          <!-- Services to Domain -->
+          <line x1="190" y1="340" x2="190" y2="370" stroke="#333" stroke-width="2"/>
+          <polygon points="190,380 185,370 195,370" fill="#333"/>
+          
+          <line x1="400" y1="340" x2="400" y2="370" stroke="#333" stroke-width="2"/>
+          <polygon points="400,380 395,370 405,370" fill="#333"/>
+          
+          <line x1="610" y1="340" x2="610" y2="370" stroke="#333" stroke-width="2"/>
+          <polygon points="610,380 605,370 615,370" fill="#333"/>
+          
+          <!-- Domain to Data Access -->
+          <line x1="400" y1="460" x2="400" y2="470" stroke="#333" stroke-width="2"/>
+          <polygon points="400,480 395,470 405,470" fill="#333"/>
+          
+          <!-- Data Access to Persistence -->
+          <line x1="400" y1="560" x2="400" y2="570" stroke="#333" stroke-width="2"/>
+          <polygon points="400,580 395,570 405,570" fill="#333"/>
+        </svg>
+      </div>
+   
       <div class="bg-white rounded-lg shadow-md p-6 mb-8">
         <h3 class="text-xl font-semibold mb-4">Key Architectural Principles</h3>
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -163,8 +213,8 @@
         </ul>
       </div>
     </section>
-
-    <!-- Architecture Layers -->
+	
+	<!-- Architecture Layers -->
     <section class="mb-16">
       <h2 class="text-2xl font-bold mb-8 text-center">Architecture Layers</h2>
       
@@ -445,6 +495,124 @@
         </div>
       </div>
     </section>
+	
+	<!-- Data Flows -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-8 text-center">Key Data Flows</h2>
+      
+      <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Data Ingestion Flow -->
+        <div class="data-flow-card bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-4">Data Ingestion Flow</h3>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-purple-700">1</span>
+            </div>
+            <span>External Source</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Data Connector</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-purple-700">2</span>
+            </div>
+            <span>Validation</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Raw Storage</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-purple-700">3</span>
+            </div>
+            <span>Transformation</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Normalized Storage</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-purple-700">4</span>
+            </div>
+            <span>Health Check</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Notification</span>
+          </div>
+        </div>
+        
+        <!-- Analytics Generation Flow -->
+        <div class="data-flow-card bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-4">Analytics Generation Flow</h3>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-blue-700">1</span>
+            </div>
+            <span>User Request</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>API Gateway</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-blue-700">2</span>
+            </div>
+            <span>Analytics Service</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Domain Logic</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-blue-700">3</span>
+            </div>
+            <span>Repository</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Database</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-blue-700">4</span>
+            </div>
+            <span>Data Processing</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Client Rendering</span>
+          </div>
+        </div>
+        
+        <!-- Recommendation Flow -->
+        <div class="data-flow-card bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-4">Recommendation Flow</h3>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-green-700">1</span>
+            </div>
+            <span>Trigger</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Recommendation Engine</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-green-700">2</span>
+            </div>
+            <span>Data Access</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Algorithm Execution</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-green-700">3</span>
+            </div>
+            <span>Insight Generation</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Storage</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-green-700">4</span>
+            </div>
+            <span>Notification</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Display</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Technology Mapping -->
     <section class="mb-16">
@@ -677,124 +845,3 @@
   </div>
 </body>
 </html>
-    <section class="mb-16">
-      <h2 class="text-2xl font-bold mb-8 text-center">Key Data Flows</h2>
-      
-      <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Data Ingestion Flow -->
-        <div class="data-flow-card bg-white rounded-lg shadow-md p-6">
-          <h3 class="text-xl font-semibold mb-4">Data Ingestion Flow</h3>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-purple-700">1</span>
-            </div>
-            <span>External Source</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Data Connector</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-purple-700">2</span>
-            </div>
-            <span>Validation</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Raw Storage</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-purple-700">3</span>
-            </div>
-            <span>Transformation</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Normalized Storage</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-purple-700">4</span>
-            </div>
-            <span>Health Check</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Notification</span>
-          </div>
-        </div>
-        
-        <!-- Analytics Generation Flow -->
-        <div class="data-flow-card bg-white rounded-lg shadow-md p-6">
-          <h3 class="text-xl font-semibold mb-4">Analytics Generation Flow</h3>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-blue-700">1</span>
-            </div>
-            <span>User Request</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>API Gateway</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-blue-700">2</span>
-            </div>
-            <span>Analytics Service</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Domain Logic</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-blue-700">3</span>
-            </div>
-            <span>Repository</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Database</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-blue-700">4</span>
-            </div>
-            <span>Data Processing</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Client Rendering</span>
-          </div>
-        </div>
-        
-        <!-- Recommendation Flow -->
-        <div class="data-flow-card bg-white rounded-lg shadow-md p-6">
-          <h3 class="text-xl font-semibold mb-4">Recommendation Flow</h3>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-green-700">2</span>
-            </div>
-            <span>Data Access</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Algorithm Execution</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-green-700">3</span>
-            </div>
-            <span>Insight Generation</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Storage</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-green-700">4</span>
-            </div>
-            <span>Notification</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Display</span>
-          </div>
-              <span class="font-semibold text-green-700">1</span>
-            </div>
-            <span>Trigger</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Recommendation Engine</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
-              <span class="font-semibold text-green-700">2</span>
-            </div>
-            <span>Data Access</span>
-            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
-            <span>Algorithm Execution</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
