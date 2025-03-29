@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing Analytics Platform API</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <style>
+    .method-get { background-color: #61affe; }
+    .method-post { background-color: #49cc90; }
+    .method-put { background-color: #fca130; }
+    .method-patch { background-color: #50e3c2; }
+    .method-delete { background-color: #f93e3e; }
+    
+    .endpoint-group {
+      border-left: 4px solid #e5e7eb;
+      transition: all 0.2s ease;
+    }
+    
+    .endpoint-group:hover {
+      border-left-color: #6366f1;
+    }
+    
+    .api-section {
+      scroll-margin-top: 80px;
+    }
+    
+    .sticky-nav {
+      position: sticky;
+      top: 20px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header -->
+  <header class="bg-indigo-600 text-white shadow-md">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold">Marketing Analytics API</h1>
+        <p class="mt-1 text-indigo-100">Developer Documentation</p>
+      </div>
+      <div class="hidden md:block">
+        <span class="mr-2">API Version:</span>
+        <span class="bg-indigo-800 rounded-full px-3 py-1 text-sm font-medium">v1.0.0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-6 sm:px-0">
+      <div class="flex flex-col md:flex-row">
+        <!-- Sidebar Navigation -->
+        <nav class="w-full md:w-64 flex-shrink-0 mb-8 md:mb-0 md:mr-8">
+          <div class="sticky-nav bg-white rounded-lg shadow p-4">
+            <h2 class="text-lg font-semibold mb-4 pb-2 border-b border-gray-200">API Reference</h2>
+            <ul class="space-y-3">
+              <li><a href="#introduction" class="text-indigo-600 hover:text-indigo-800">Introduction</a></li>
+              <li><a href="#authentication" class="text-indigo-600 hover:text-indigo-800">Authentication</a></li>
+              <li><a href="#users" class="text-indigo-600 hover:text-indigo-800">Users</a></li>
+              <li><a href="#data-sources" class="text-indigo-600 hover:text-indigo-800">Data Sources</a></li>
+              <li><a href="#analytics" class="text-indigo-600 hover:text-indigo-800">Analytics</a></li>
+              <li><a href="#recommendations" class="text-indigo-600 hover:text-indigo-800">Recommendations</a></li>
+              <li><a href="#config" class="text-indigo-600 hover:text-indigo-800">Configuration</a></li>
+              <li><a href="#errors" class="text-indigo-600 hover:text-indigo-800">Error Handling</a></li>
+            </ul>
+            
+            <h2 class="text-lg font-semibold mt-8 mb-4 pb-2 border-b border-gray-200">Resources</h2>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-600 hover:text-indigo-600">OpenAPI Specification</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-indigo-600">API Clients</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-indigo-600">Changelog</a></li>
+            </ul>
+          </div>
+        </nav>
+        
+        <!-- Content -->
+        <div class="flex-1">
+          <!-- Introduction -->
+          <section id="introduction" class="api-section bg-white rounded-lg shadow mb-8 p-6">
+            <h2 class="text-2xl font-bold mb-4">Introduction</h2>
+            <p class="mb-4">The Marketing Analytics Platform API provides programmatic access to your marketing data, analytics, and insights. This RESTful API allows you to:</p>
+            <ul class="list-disc pl-6 mb-6 space-y-2">
+              <li>Manage data source connections (Shopify, Google Analytics, Klaviyo)</li>
+              <li>Access marketing performance metrics and analysis</li>
+              <li>Retrieve actionable recommendations to improve your marketing</li>
+              <li>Configure dashboards and alerts</li>
+            </ul>
+            
+            <h3 class="text-xl font-semibold mb-2">Base URL</h3>
+            <div class="bg-gray-800 text-white p-3 rounded font-mono mb-6">
+              https://api.marketingplatform.example/v1
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-2">Response Format</h3>
+            <p class="mb-2">All responses are returned in JSON format with HTTP status codes.</p>
+            <div class="bg-gray-100 p-3 rounded font-mono text-sm mb-4">
+<pre>{
+  "data": {
+    // Response data here
+  },
+  "meta": {
+    // Metadata, pagination info, etc.
+  }
+}</pre>
+            </div>
+          </section>
+          
+          <!-- Authentication -->
+          <section id="authentication" class="api-section bg-white rounded-lg shadow mb-8 p-6">
+            <h2 class="text-2xl font-bold mb-4">Authentication</h2>
+            <p class="mb-4">All API requests require authentication using a JSON Web Token (JWT).</p>
+            
+            <h3 class="text-xl font-semibold mb-2">Bearer Authentication</h3>
+            <p class="mb-2">Include your JWT token in the Authorization header:</p>
+            <div class="bg-gray-100 p-3 rounded font-mono text-sm mb-6">
+              Authorization: Bearer &lt;your_jwt_token&gt;
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-2">Obtaining a Token</h3>
+            <p>Authentication is handled through Firebase Authentication. Refer to the Firebase documentation for details on how to authenticate and retrieve a JWT token.</p>
+          </section>
+          
+          <!-- Users -->
+          <section id="users" class="api-section bg-white rounded-lg shadow mb-8 p-6">
+            <h2 class="text-2xl font-bold mb-4">Users</h2>
+            <p class="mb-6">Endpoints for managing user profiles and preferences.</p>
+            
+            <!-- Get User Profile -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/users/me</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Current User Profile</h4>
+                <p class="text-gray-600 mb-3">Returns the profile of the currently authenticated user.</p>
+                <div class="mb-2">
+                  <span class="text-sm font-semibold">Response:</span>
+                  <div class="bg-gray-100 p-3 rounded font-mono text-sm mt-1">
+<pre>{
+  "id": "user123",
+  "email": "user@example.com",
+  "name": "Jane Marketer",
+  "role": "owner",
+  "created_at": "2025-01-15T10:30:00Z",
+  "organization_id": "org456",
+  "last_login": "2025-03-28T09:15:22Z"
+}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Update User Profile -->
+            <div class="endpoint-group pl-4">
+              <div class="flex items-center mb-3">
+                <span class="method-patch text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">PATCH</span>
+                <code class="font-mono text-gray-800">/users/me</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Update Current User Profile</h4>
+                <p class="text-gray-600 mb-3">Updates attributes of the currently authenticated user.</p>
+                <div class="mb-2">
+                  <span class="text-sm font-semibold">Request Body:</span>
+                  <div class="bg-gray-100 p-3 rounded font-mono text-sm mt-1">
+<pre>{
+  "name": "Jane Smith" // Updated name
+}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Data Sources -->
+          <section id="data-sources" class="api-section bg-white rounded-lg shadow mb-8 p-6">
+            <h2 class="text-2xl font-bold mb-4">Data Sources</h2>
+            <p class="mb-6">Endpoints for managing connections to marketing data sources.</p>
+            
+            <!-- List Data Sources -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/data-sources</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">List All Data Sources</h4>
+                <p class="text-gray-600 mb-3">Returns a list of all data sources configured for the organization.</p>
+                <div class="mb-2">
+                  <span class="text-sm font-semibold">Query Parameters:</span>
+                  <table class="min-w-full divide-y divide-gray-200 mt-1 mb-3 text-sm">
+                    <thead class="bg-gray-100">
+                      <tr>
+                        <th class="px-4 py-2 text-left font-medium">Parameter</th>
+                        <th class="px-4 py-2 text-left font-medium">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-4 py-2"><code>status</code></td>
+                        <td class="px-4 py-2">Filter by connection status (active, pending, error)</td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2"><code>type</code></td>
+                        <td class="px-4 py-2">Filter by data source type (shopify, google_analytics, klaviyo)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Create Data Source -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-post text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">POST</span>
+                <code class="font-mono text-gray-800">/data-sources</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Create a New Data Source</h4>
+                <p class="text-gray-600 mb-3">Configure a new data source for the organization.</p>
+              </div>
+            </div>
+            
+            <!-- Get Data Source -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/data-sources/{dataSourceId}</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Data Source Details</h4>
+                <p class="text-gray-600 mb-3">Returns details of a specific data source.</p>
+              </div>
+            </div>
+            
+            <!-- Update Data Source -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-patch text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">PATCH</span>
+                <code class="font-mono text-gray-800">/data-sources/{dataSourceId}</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Update Data Source</h4>
+                <p class="text-gray-600 mb-3">Update configuration of a specific data source.</p>
+              </div>
+            </div>
+            
+            <!-- Delete Data Source -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-delete text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">DELETE</span>
+                <code class="font-mono text-gray-800">/data-sources/{dataSourceId}</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Delete Data Source</h4>
+                <p class="text-gray-600 mb-3">Remove a data source from the organization.</p>
+              </div>
+            </div>
+            
+            <!-- Trigger Sync -->
+            <div class="endpoint-group pl-4">
+              <div class="flex items-center mb-3">
+                <span class="method-post text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">POST</span>
+                <code class="font-mono text-gray-800">/data-sources/{dataSourceId}/sync</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Trigger Data Synchronization</h4>
+                <p class="text-gray-600 mb-3">Manually trigger a sync from the data source.</p>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Analytics -->
+          <section id="analytics" class="api-section bg-white rounded-lg shadow mb-8 p-6">
+            <h2 class="text-2xl font-bold mb-4">Analytics</h2>
+            <p class="mb-6">Endpoints for retrieving marketing analytics and insights.</p>
+            
+            <!-- Get Metrics -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/analytics/metrics</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Marketing Metrics</h4>
+                <p class="text-gray-600 mb-3">Returns marketing performance metrics based on specified parameters.</p>
+                <div class="mb-2">
+                  <span class="text-sm font-semibold">Required Parameters:</span>
+                  <table class="min-w-full divide-y divide-gray-200 mt-1 mb-3 text-sm">
+                    <thead class="bg-gray-100">
+                      <tr>
+                        <th class="px-4 py-2 text-left font-medium">Parameter</th>
+                        <th class="px-4 py-2 text-left font-medium">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-4 py-2"><code>metrics</code></td>
+                        <td class="px-4 py-2">Comma-separated list of metrics to retrieve</td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2"><code>start_date</code></td>
+                        <td class="px-4 py-2">Start date for the analysis period (YYYY-MM-DD)</td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2"><code>end_date</code></td>
+                        <td class="px-4 py-2">End date for the analysis period (YYYY-MM-DD)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Analyze Funnel -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/analytics/funnels</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Analyze Conversion Funnel</h4>
+                <p class="text-gray-600">Returns conversion funnel analysis for the specified steps.</p>
+              </div>
+            </div>
+            
+            <!-- Cohort Analysis -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/analytics/cohorts</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Perform Cohort Analysis</h4>
+                <p class="text-gray-600">Returns cohort analysis for customer retention and behavior.</p>
+              </div>
+            </div>
+            
+            <!-- Attribution Analysis -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/analytics/attribution</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Channel Attribution</h4>
+                <p class="text-gray-600">Returns attribution analysis for marketing channels.</p>
+              </div>
+            </div>
+            
+            <!-- Data Health -->
+            <div class="endpoint-group pl-4">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/analytics/health</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Data Health Metrics</h4>
+                <p class="text-gray-600">Returns metrics about data completeness, freshness, and quality.</p>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Recommendations -->
+          <section id="recommendations" class="api-section bg-white rounded-lg shadow mb-8 p-6">
+            <h2 class="text-2xl font-bold mb-4">Recommendations</h2>
+            <p class="mb-6">Endpoints for retrieving and managing actionable marketing recommendations.</p>
+            
+            <!-- Get Recommendations -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/recommendations</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Recommendations</h4>
+                <p class="text-gray-600 mb-3">Returns actionable marketing recommendations.</p>
+                <div class="mb-2">
+                  <span class="text-sm font-semibold">Query Parameters:</span>
+                  <table class="min-w-full divide-y divide-gray-200 mt-1 mb-3 text-sm">
+                    <tbody class="divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-4 py-2"><code>category</code></td>
+                        <td class="px-4 py-2">Category of recommendations to retrieve</td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2"><code>status</code></td>
+                        <td class="px-4 py-2">Filter by recommendation status</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Get Recommendation Details -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/recommendations/{recommendationId}</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Recommendation Details</h4>
+                <p class="text-gray-600">Returns detailed information about a specific recommendation.</p>
+              </div>
+            </div>
+            
+            <!-- Update Recommendation Status -->
+            <div class="endpoint-group pl-4">
+              <div class="flex items-center mb-3">
+                <span class="method-patch text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">PATCH</span>
+                <code class="font-mono text-gray-800">/recommendations/{recommendationId}</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Update Recommendation Status</h4>
+                <p class="text-gray-600">Update the status of a recommendation (e.g., mark as implemented).</p>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Configuration -->
+          <section id="config" class="api-section bg-white rounded-lg shadow mb-8 p-6">
+            <h2 class="text-2xl font-bold mb-4">Configuration</h2>
+            <p class="mb-6">Endpoints for managing platform configuration.</p>
+            
+            <!-- Get Dashboard Config -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/config/dashboard</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Dashboard Configuration</h4>
+                <p class="text-gray-600">Returns the configuration for the user's dashboard.</p>
+              </div>
+            </div>
+            
+            <!-- Update Dashboard Config -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-put text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">PUT</span>
+                <code class="font-mono text-gray-800">/config/dashboard</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Update Dashboard Configuration</h4>
+                <p class="text-gray-600">Update the configuration for the user's dashboard.</p>
+              </div>
+            </div>
+            
+            <!-- Get Metrics Config -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/config/metrics</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Available Metrics and Dimensions</h4>
+                <p class="text-gray-600">Returns all available metrics and dimensions for analytics.</p>
+              </div>
+            </div>
+            
+            <!-- Get Alerts -->
+            <div class="endpoint-group pl-4 mb-8">
+              <div class="flex items-center mb-3">
+                <span class="method-get text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">GET</span>
+                <code class="font-mono text-gray-800">/config/alerts</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Get Configured Alerts</h4>
+                <p class="text-gray-600">Returns all configured alerts for the organization.</p>
+              </div>
+            </div>
+            
+            <!-- Create Alert -->
+            <div class="endpoint-group pl-4">
+              <div class="flex items-center mb-3">
+                <span class="method-post text-white font-bold py-1 px-3 rounded-md text-sm w-16 text-center mr-3">POST</span>
+                <code class="font-mono text-gray-800">/config/alerts</code>
+              </div>
+              <div class="ml-2">
+                <h4 class="font-semibold mb-1">Create a New Alert</h4>
+                <p class="text-gray-600">Configure a new alert for the organization.</p>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Error Handling -->
+          <section id="errors" class="api-section bg-white rounded-lg shadow p-6">
+            <h2 class="text-2xl font-bold mb-4">Error Handling</h2>
+            <p class="mb-4">The API uses conventional HTTP response codes to indicate the success or failure of requests.</p>
+            
+            <h3 class="text-xl font-semibold mb-3">HTTP Status Codes</h3>
+            <table class="min-w-full divide-y divide-gray-200 mb-6 text-sm">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2 text-left font-medium">Code</th>
+                  <th class="px-4 py-2 text-left font-medium">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr>
+                  <td class="px-4 py-2"><code>200</code></td>
+                  <td class="px-4 py-2">Success</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>201</code></td>
+                  <td class="px-4 py-2">Resource created</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>204</code></td>
+                  <td class="px-4 py-2">Success with no content</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>400</code></td>
+                  <td class="px-4 py-2">Bad request - invalid parameters</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>401</code></td>
+                  <td class="px-4 py-2">Unauthorized - authentication required</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>403</code></td>
+                  <td class="px-4 py-2">Forbidden - insufficient permissions</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>404</code></td>
+                  <td class="px-4 py-2">Not found - resource doesn't exist</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>429</code></td>
+                  <td class="px-4 py-2">Too many requests - rate limit exceeded</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>500</code></td>
+                  <td class="px-4 py-2">Server error</td>
+                </tr>
+              </tbody>
+            </table>
+            
+			<h3 class="text-xl font-semibold mb-3">Error Response Format</h3>
+            <p class="mb-2">Error responses include a consistent structure with error details:</p>
+            <div class="bg-gray-100 p-3 rounded font-mono text-sm mt-1 mb-4">
+<pre>{
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Human-readable error message",
+    "details": {
+      // Additional error details when available
+    }
+  }
+}</pre>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-3">Common Error Codes</h3>
+            <table class="min-w-full divide-y divide-gray-200 mb-6 text-sm">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2 text-left font-medium">Code</th>
+                  <th class="px-4 py-2 text-left font-medium">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr>
+                  <td class="px-4 py-2"><code>UNAUTHORIZED</code></td>
+                  <td class="px-4 py-2">Authentication is required or has failed</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>FORBIDDEN</code></td>
+                  <td class="px-4 py-2">User does not have permission for the requested operation</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>RESOURCE_NOT_FOUND</code></td>
+                  <td class="px-4 py-2">The requested resource could not be found</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>INVALID_REQUEST</code></td>
+                  <td class="px-4 py-2">The request contains invalid parameters</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>RATE_LIMIT_EXCEEDED</code></td>
+                  <td class="px-4 py-2">The API rate limit has been exceeded</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>INTERNAL_ERROR</code></td>
+                  <td class="px-4 py-2">An internal server error occurred</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h3 class="text-xl font-semibold mb-3">Error Handling Examples</h3>
+            
+            <h4 class="font-semibold mb-2">Invalid Parameter</h4>
+            <div class="bg-gray-100 p-3 rounded font-mono text-sm mt-1 mb-4">
+<pre>{
+  "error": {
+    "code": "INVALID_REQUEST",
+    "message": "Invalid date range specified",
+    "details": {
+      "start_date": "Must be before end_date",
+      "end_date": "Must be after start_date"
+    }
+  }
+}</pre>
+            </div>
+            
+            <h4 class="font-semibold mb-2">Resource Not Found</h4>
+            <div class="bg-gray-100 p-3 rounded font-mono text-sm mt-1 mb-4">
+<pre>{
+  "error": {
+    "code": "RESOURCE_NOT_FOUND",
+    "message": "Data source not found",
+    "details": {
+      "id": "The specified data source does not exist"
+    }
+  }
+}</pre>
+            </div>
+          </section>
+          
+          <!-- Rate Limits Section -->
+          <section id="rate-limits" class="api-section bg-white rounded-lg shadow mb-8 p-6">
+            <h2 class="text-2xl font-bold mb-4">Rate Limits</h2>
+            <p class="mb-4">To ensure the stability and availability of the API for all users, rate limits are enforced on API requests.</p>
+            
+            <h3 class="text-xl font-semibold mb-3">Default Limits</h3>
+            <table class="min-w-full divide-y divide-gray-200 mb-6 text-sm">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2 text-left font-medium">Plan</th>
+                  <th class="px-4 py-2 text-left font-medium">Rate Limit</th>
+                  <th class="px-4 py-2 text-left font-medium">Burst Limit</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr>
+                  <td class="px-4 py-2">Standard</td>
+                  <td class="px-4 py-2">60 requests per minute</td>
+                  <td class="px-4 py-2">100 requests</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2">Premium</td>
+                  <td class="px-4 py-2">120 requests per minute</td>
+                  <td class="px-4 py-2">200 requests</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2">Enterprise</td>
+                  <td class="px-4 py-2">Custom</td>
+                  <td class="px-4 py-2">Custom</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h3 class="text-xl font-semibold mb-3">Rate Limit Headers</h3>
+            <p class="mb-2">Rate limit information is included in the response headers:</p>
+            <table class="min-w-full divide-y divide-gray-200 mb-6 text-sm">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2 text-left font-medium">Header</th>
+                  <th class="px-4 py-2 text-left font-medium">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr>
+                  <td class="px-4 py-2"><code>X-RateLimit-Limit</code></td>
+                  <td class="px-4 py-2">The maximum number of requests allowed per minute</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>X-RateLimit-Remaining</code></td>
+                  <td class="px-4 py-2">The number of requests remaining in the current window</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>X-RateLimit-Reset</code></td>
+                  <td class="px-4 py-2">The time when the current rate limit window resets (Unix timestamp)</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-blue-800">
+                    When you exceed the rate limit, you will receive a 429 Too Many Requests response. Please implement exponential backoff or similar strategies to handle rate limiting gracefully.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Pagination Section -->
+          <section id="pagination" class="api-section bg-white rounded-lg shadow p-6">
+            <h2 class="text-2xl font-bold mb-4">Pagination</h2>
+            <p class="mb-4">Endpoints that return collections of items support pagination to allow efficient retrieval of large datasets.</p>
+            
+            <h3 class="text-xl font-semibold mb-3">Pagination Parameters</h3>
+            <table class="min-w-full divide-y divide-gray-200 mb-6 text-sm">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2 text-left font-medium">Parameter</th>
+                  <th class="px-4 py-2 text-left font-medium">Description</th>
+                  <th class="px-4 py-2 text-left font-medium">Default</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr>
+                  <td class="px-4 py-2"><code>page</code></td>
+                  <td class="px-4 py-2">The page number to retrieve</td>
+                  <td class="px-4 py-2">1</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2"><code>per_page</code></td>
+                  <td class="px-4 py-2">The number of items per page</td>
+                  <td class="px-4 py-2">20</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h3 class="text-xl font-semibold mb-3">Pagination Response</h3>
+            <p class="mb-2">Paginated responses include metadata in the <code>meta</code> section:</p>
+            <div class="bg-gray-100 p-3 rounded font-mono text-sm mt-1 mb-4">
+<pre>{
+  "data": [
+    // Items for the current page
+  ],
+  "meta": {
+    "current_page": 2,
+    "per_page": 20,
+    "total_items": 135,
+    "total_pages": 7
+  }
+}</pre>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-3">Example: Paginated Request</h3>
+            <div class="bg-gray-800 text-white p-3 rounded font-mono mb-2">
+              GET /data-sources?page=2&per_page=15
+            </div>
+            <p class="mb-4">This will return the second page of data sources with 15 items per page.</p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-yellow-700">
+                    The maximum allowed value for <code>per_page</code> is 100. Requesting more than 100 items per page will result in a 400 Bad Request response.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-xl font-bold">Marketing Analytics API</h3>
+          <p class="mt-1 text-gray-400">Developer Documentation</p>
+        </div>
+        <div>
+          <p class="text-gray-400">Have questions? <a href="#" class="text-indigo-400 hover:text-indigo-300">Contact Developer Support</a></p>
+        </div>
+      </div>
+      <div class="mt-8 border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between">
+        <p class="text-gray-400">© 2025 Marketing Analytics Platform. All rights reserved.</p>
+        <div class="mt-4 md:mt-0 flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white">Status</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Simple JS for sticky sidebar behavior -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const links = document.querySelectorAll('nav a');
+      
+      links.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          if (targetId.startsWith('#')) {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 70,
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
