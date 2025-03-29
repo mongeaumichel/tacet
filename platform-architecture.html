@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing Analytics Platform: Architecture</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+      background-color: #f9fafb;
+      color: #374151;
+    }
+    .text-gradient {
+      background: linear-gradient(90deg, #4f46e5, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .layer-card {
+      transition: all 0.2s ease-in-out;
+      position: relative;
+      overflow: hidden;
+    }
+    .layer-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .layer-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+    }
+    .data-flow-card {
+      border-left: 4px solid #8b5cf6;
+    }
+    .code-block {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      background-color: #1e293b;
+      color: #e2e8f0;
+      border-radius: 0.375rem;
+      padding: 1rem;
+    }
+    .icon-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      flex-shrink: 0;
+    }
+    .feature-list li {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    .feature-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #6366f1;
+    }
+  </style>
+</head>
+<body>
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Header -->
+    <header class="mb-16 text-center">
+      <h1 class="text-4xl font-extrabold mb-2 text-gradient">Marketing Analytics Platform</h1>
+      <p class="text-xl text-gray-600 mb-8">Architecture Overview</p>
+      <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
+    </header>
+
+    <!-- Architecture Diagram -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-8 text-center">Architectural Overview</h2>
+      <div class="code-block mb-6 text-center">
+┌─────────────────────────────────────────────────┐
+│                  Client Layer                   │
+│   Svelte Frontend with D3.js/Layercake (SPA)    │
+└───────────────────────┬─────────────────────────┘
+                        │
+┌───────────────────────▼─────────────────────────┐
+│               API Gateway Layer                 │
+│        FastAPI + Firebase Auth Middleware       │
+└───┬───────────────┬───────────────┬─────────────┘
+    │               │               │
+┌───▼───────┐ ┌─────▼─────┐ ┌───────▼───────┐
+│ Analytics │ │   Data    │ │  Management   │
+│ Services  │ │ Services  │ │   Services    │
+└───┬───────┘ └─────┬─────┘ └───────┬───────┘
+    │               │               │
+┌───▼───────────────▼───────────────▼───────────┐
+│               Domain Layer                    │
+│     Business Logic & Domain Models            │
+└───────────────────┬─────────────────────────┘
+                    │
+┌───────────────────▼─────────────────────────┐
+│          Data Access Layer                  │
+│   Repository Pattern + Data Connectors      │
+└───────────────────┬─────────────────────────┘
+                    │
+┌───────────────────▼─────────────────────────┐
+│           Persistence Layer                 │
+│      PostgreSQL + Caching + Storage         │
+└─────────────────────────────────────────────┘</div>
+      
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h3 class="text-xl font-semibold mb-4">Key Architectural Principles</h3>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <li class="flex items-start">
+            <div class="bg-indigo-100 rounded-full p-1 mr-3 mt-1">
+              <i class="fas fa-layer-group text-indigo-600 text-sm"></i>
+            </div>
+            <div>
+              <span class="font-medium">Clean Architecture</span>
+              <p class="text-gray-600 text-sm">Clear separation of concerns with domain-centric approach</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <div class="bg-indigo-100 rounded-full p-1 mr-3 mt-1">
+              <i class="fas fa-plug text-indigo-600 text-sm"></i>
+            </div>
+            <div>
+              <span class="font-medium">API-First Design</span>
+              <p class="text-gray-600 text-sm">Well-defined APIs between all layers</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <div class="bg-indigo-100 rounded-full p-1 mr-3 mt-1">
+              <i class="fas fa-box text-indigo-600 text-sm"></i>
+            </div>
+            <div>
+              <span class="font-medium">Stateless Services</span>
+              <p class="text-gray-600 text-sm">Services maintain no session state where possible</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <div class="bg-indigo-100 rounded-full p-1 mr-3 mt-1">
+              <i class="fas fa-sliders-h text-indigo-600 text-sm"></i>
+            </div>
+            <div>
+              <span class="font-medium">Configuration-Driven</span>
+              <p class="text-gray-600 text-sm">Behavior configured externally when appropriate</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <div class="bg-indigo-100 rounded-full p-1 mr-3 mt-1">
+              <i class="fas fa-bolt text-indigo-600 text-sm"></i>
+            </div>
+            <div>
+              <span class="font-medium">Event-Driven Where Beneficial</span>
+              <p class="text-gray-600 text-sm">Use events for asynchronous processes</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Architecture Layers -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-8 text-center">Architecture Layers</h2>
+      
+      <!-- Client Layer -->
+      <div class="layer-card bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div class="layer-indicator bg-purple-500"></div>
+        <div class="p-6">
+          <div class="flex items-center mb-4">
+            <div class="icon-circle bg-purple-100 text-purple-600">
+              <i class="fas fa-desktop text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">Client Layer</h3>
+          </div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Dashboard Application</h4>
+              <p class="text-gray-600 text-sm">Main Svelte SPA for user interaction with marketing analytics</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Admin Portal</h4>
+              <p class="text-gray-600 text-sm">Management interface for platform configuration</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Shared Components</h4>
+              <p class="text-gray-600 text-sm">Reusable UI elements and visualizations with D3.js/Layercake</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <h4 class="font-medium mb-2">Quality Focus:</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Performance</span>
+              <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Usability</span>
+              <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Maintainability</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- API Gateway Layer -->
+      <div class="layer-card bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div class="layer-indicator bg-blue-500"></div>
+        <div class="p-6">
+          <div class="flex items-center mb-4">
+            <div class="icon-circle bg-blue-100 text-blue-600">
+              <i class="fas fa-server text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">API Gateway Layer</h3>
+          </div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Authentication Handler</h4>
+              <p class="text-gray-600 text-sm">Firebase Auth integration for secure authentication</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Request Router</h4>
+              <p class="text-gray-600 text-sm">Routes to appropriate service endpoints</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Request/Response Formatter</h4>
+              <p class="text-gray-600 text-sm">Ensures consistent API patterns and formats</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Cross-Cutting Concerns</h4>
+              <p class="text-gray-600 text-sm">Logging, error handling, rate limiting</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <h4 class="font-medium mb-2">Quality Focus:</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Security</span>
+              <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Performance</span>
+              <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Observability</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Service Layer -->
+      <div class="layer-card bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div class="layer-indicator bg-green-500"></div>
+        <div class="p-6">
+          <div class="flex items-center mb-4">
+            <div class="icon-circle bg-green-100 text-green-600">
+              <i class="fas fa-cogs text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">Service Layer</h3>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+            <div>
+              <h4 class="font-medium mb-3 text-center pb-2 border-b border-gray-200">Analytics Services</h4>
+              <ul class="space-y-2 text-sm text-gray-600">
+                <li class="flex items-start">
+                  <i class="fas fa-chart-line text-green-500 mr-2 mt-1"></i>
+                  <span>Metrics Service</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-lightbulb text-green-500 mr-2 mt-1"></i>
+                  <span>Insight Generator</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-magic text-green-500 mr-2 mt-1"></i>
+                  <span>Recommendation Engine</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-file-alt text-green-500 mr-2 mt-1"></i>
+                  <span>Report Generator</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 class="font-medium mb-3 text-center pb-2 border-b border-gray-200">Data Services</h4>
+              <ul class="space-y-2 text-sm text-gray-600">
+                <li class="flex items-start">
+                  <i class="fas fa-download text-green-500 mr-2 mt-1"></i>
+                  <span>Data Ingestion Service</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-sync text-green-500 mr-2 mt-1"></i>
+                  <span>Data Transformation Service</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-upload text-green-500 mr-2 mt-1"></i>
+                  <span>Data Export Service</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-heartbeat text-green-500 mr-2 mt-1"></i>
+                  <span>Health Monitoring Service</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 class="font-medium mb-3 text-center pb-2 border-b border-gray-200">Management Services</h4>
+              <ul class="space-y-2 text-sm text-gray-600">
+                <li class="flex items-start">
+                  <i class="fas fa-users text-green-500 mr-2 mt-1"></i>
+                  <span>User Management</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-plug text-green-500 mr-2 mt-1"></i>
+                  <span>Integration Management</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-bell text-green-500 mr-2 mt-1"></i>
+                  <span>Notification Service</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-sliders-h text-green-500 mr-2 mt-1"></i>
+                  <span>Configuration Service</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <h4 class="font-medium mb-2">Quality Focus:</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Extensibility</span>
+              <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Reliability</span>
+              <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Scalability</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Domain Layer -->
+      <div class="layer-card bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div class="layer-indicator bg-yellow-500"></div>
+        <div class="p-6">
+          <div class="flex items-center mb-4">
+            <div class="icon-circle bg-yellow-100 text-yellow-600">
+              <i class="fas fa-brain text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">Domain Layer</h3>
+          </div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Domain Models</h4>
+              <p class="text-gray-600 text-sm">Core business entities (User, DataSource, Metric, etc.)</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Business Logic</h4>
+              <p class="text-gray-600 text-sm">Rules and calculations that define the platform</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Value Objects</h4>
+              <p class="text-gray-600 text-sm">Immutable objects representing concepts without identity</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <h4 class="font-medium mb-2">Quality Focus:</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Maintainability</span>
+              <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Extensibility</span>
+              <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Reliability</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Data Access Layer -->
+      <div class="layer-card bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div class="layer-indicator bg-red-500"></div>
+        <div class="p-6">
+          <div class="flex items-center mb-4">
+            <div class="icon-circle bg-red-100 text-red-600">
+              <i class="fas fa-database text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">Data Access Layer</h3>
+          </div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Repositories</h4>
+              <p class="text-gray-600 text-sm">Interface between domain and persistence layers</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Data Mappers</h4>
+              <p class="text-gray-600 text-sm">Transform between domain and database models</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Query Builders</h4>
+              <p class="text-gray-600 text-sm">Create efficient database queries</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Connection Management</h4>
+              <p class="text-gray-600 text-sm">Handle database connections efficiently</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <h4 class="font-medium mb-2">Quality Focus:</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Performance</span>
+              <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Reliability</span>
+              <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Security</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Persistence Layer -->
+      <div class="layer-card bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div class="layer-indicator bg-pink-500"></div>
+        <div class="p-6">
+          <div class="flex items-center mb-4">
+            <div class="icon-circle bg-pink-100 text-pink-600">
+              <i class="fas fa-hdd text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">Persistence Layer</h3>
+          </div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">PostgreSQL Database</h4>
+              <p class="text-gray-600 text-sm">Primary data store on Google Cloud SQL</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Caching Layer</h4>
+              <p class="text-gray-600 text-sm">For performance optimization of frequent queries</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Object Storage</h4>
+              <p class="text-gray-600 text-sm">For reports, exports, and large objects</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-medium mb-2">Migration System</h4>
+              <p class="text-gray-600 text-sm">For controlled database schema evolution</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <h4 class="font-medium mb-2">Quality Focus:</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">Performance</span>
+              <span class="bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">Reliability</span>
+              <span class="bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">Scalability</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Mapping -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-8 text-center">Technology Mapping</h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Backend Tech -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 py-3 px-6">
+            <h3 class="text-white font-semibold text-lg">Backend Technologies</h3>
+          </div>
+          <div class="p-6">
+            <ul class="space-y-4">
+              <li class="flex items-start">
+                <div class="flex-shrink-0 h-5 w-5 rounded-full bg-indigo-100 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-code text-xs text-indigo-600"></i>
+                </div>
+                <div>
+                  <span class="font-medium">API Framework:</span>
+                  <span class="text-gray-600 ml-2">FastAPI (Python)</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="flex-shrink-0 h-5 w-5 rounded-full bg-indigo-100 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-lock text-xs text-indigo-600"></i>
+                </div>
+                <div>
+                  <span class="font-medium">Authentication:</span>
+                  <span class="text-gray-600 ml-2">Firebase Authentication</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="flex-shrink-0 h-5 w-5 rounded-full bg-indigo-100 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-database text-xs text-indigo-600"></i>
+                </div>
+                <div>
+                  <span class="font-medium">Database:</span>
+                  <span class="text-gray-600 ml-2">PostgreSQL on Google Cloud SQL</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="flex-shrink-0 h-5 w-5 rounded-full bg-indigo-100 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-exchange-alt text-xs text-indigo-600"></i>
+                </div>
+                <div>
+                  <span class="font-medium">Transformation:</span>
+                  <span class="text-gray-600 ml-2">dbt for data modeling</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="flex-shrink-0 h-5 w-5 rounded-full bg-indigo-100 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-tasks text-xs text-indigo-600"></i>
+                </div>
+                <div>
+                  <span class="font-medium">Task Processing:</span>
+                  <span class="text-gray-600 ml-2">Background workers for async processing</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Frontend Tech -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="bg-gradient-to-r from-purple-600 to-purple-700 py-3 px-6">
+            <h3 class="text-white font-semibold text-lg">Frontend Technologies</h3>
+          </div>
+          <div class="p-6">
+            <ul class="space-y-4">
+              <li class="flex items-start">
+                <div class="flex-shrink-0 h-5 w-5 rounded-full bg-purple-100 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-laptop-code text-xs text-purple-600"></i>
+                </div>
+                <div>
+                  <span class="font-medium">Framework:</span>
+                  <span class="text-gray-600 ml-2">Svelte/SvelteKit</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="flex-shrink-0 h-5 w-5 rounded-full bg-purple-100 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-chart-bar text-xs text-purple-600"></i>
+                </div>
+                <div>
+                  <span class="font-medium">Visualization:</span>
+                  <span class="text-gray-600 ml-2">D3.js with Layercake</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="flex-shrink-0 h-5 w-5 rounded-full bg-purple-100 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-paint-brush text-xs text-purple-600"></i>
+                </div>
+                <div>
+                  <span class="font-medium">Styling:</span>
+                  <span class="text-gray-600 ml-2">Tailwind CSS for consistent UI</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="flex-shrink-0 h-5 w-5 rounded-full bg-purple-100 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-stream text-xs text-purple-600"></i>
+                </div>
+                <div>
+                  <span class="font-medium">State Management:</span>
+                  <span class="text-gray-600 ml-2">Svelte stores (no need for external state libraries)</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Infrastructure -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden mt-8">
+        <div class="bg-gradient-to-r from-green-600 to-green-700 py-3 px-6">
+          <h3 class="text-white font-semibold text-lg">Infrastructure</h3>
+        </div>
+        <div class="p-6">
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <i class="fas fa-server text-green-600 mr-2"></i>
+                <h4 class="font-medium">API Hosting</h4>
+              </div>
+              <p class="text-gray-600 text-sm">Google Cloud Run</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <i class="fas fa-globe text-green-600 mr-2"></i>
+                <h4 class="font-medium">Frontend Hosting</h4>
+              </div>
+              <p class="text-gray-600 text-sm">Firebase Hosting</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <i class="fas fa-database text-green-600 mr-2"></i>
+                <h4 class="font-medium">Database</h4>
+              </div>
+              <p class="text-gray-600 text-sm">Google Cloud SQL</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <i class="fas fa-hdd text-green-600 mr-2"></i>
+                <h4 class="font-medium">Storage</h4>
+              </div>
+              <p class="text-gray-600 text-sm">Google Cloud Storage</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <i class="fas fa-eye text-green-600 mr-2"></i>
+                <h4 class="font-medium">Monitoring</h4>
+              </div>
+              <p class="text-gray-600 text-sm">Google Cloud Monitoring + custom health checks</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Implementation Roadmap -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-8 text-center">Implementation Roadmap</h2>
+      
+      <div class="relative">
+        <!-- Phase Timeline -->
+        <div class="absolute left-8 top-0 bottom-0 w-1 bg-gray-200 hidden md:block"></div>
+        
+        <!-- Phase 1 -->
+        <div class="mb-12 md:ml-16 relative">
+          <div class="absolute -left-8 top-0 h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold hidden md:flex">1</div>
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 py-3 px-6">
+              <h3 class="text-white font-semibold">Phase 1: Foundation</h3>
+            </div>
+            <div class="p-6">
+              <ul class="feature-list space-y-2">
+                <li>API Gateway with Authentication</li>
+                <li>Basic Domain Models and Repositories</li>
+                <li>Data Access Layer with PostgreSQL</li>
+                <li>Simple Svelte Frontend with Authentication</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Phase 2 -->
+        <div class="mb-12 md:ml-16 relative">
+          <div class="absolute -left-8 top-0 h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold hidden md:flex">2</div>
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 py-3 px-6">
+              <h3 class="text-white font-semibold">Phase 2: Core Analytics</h3>
+            </div>
+            <div class="p-6">
+              <ul class="feature-list space-y-2">
+                <li>Data Connectors for Sources</li>
+                <li>Transformation Pipeline</li>
+                <li>Basic Analytics Services</li>
+                <li>Dashboard Visualizations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Phase 3 -->
+        <div class="md:ml-16 relative">
+          <div class="absolute -left-8 top-0 h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold hidden md:flex">3</div>
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 py-3 px-6">
+              <h3 class="text-white font-semibold">Phase 3: Advanced Features</h3>
+            </div>
+            <div class="p-6">
+              <ul class="feature-list space-y-2">
+                <li>Recommendation Engine</li>
+                <li>Report Generation</li>
+                <li>Advanced Visualizations</li>
+                <li>Notification System</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section>
+      <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg p-6 text-white text-center">
+        <h3 class="text-xl font-bold mb-2">Architecture Summary</h3>
+        <p>This architecture provides a solid foundation while allowing for iterative development and validation of product-market fit. It balances immediate needs with future scalability, ensuring that early development efforts contribute to the long-term vision.</p>
+      </div>
+    </section>
+    
+  </div>
+</body>
+</html>
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-8 text-center">Key Data Flows</h2>
+      
+      <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Data Ingestion Flow -->
+        <div class="data-flow-card bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-4">Data Ingestion Flow</h3>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-purple-700">1</span>
+            </div>
+            <span>External Source</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Data Connector</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-purple-700">2</span>
+            </div>
+            <span>Validation</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Raw Storage</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-purple-700">3</span>
+            </div>
+            <span>Transformation</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Normalized Storage</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-purple-700">4</span>
+            </div>
+            <span>Health Check</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Notification</span>
+          </div>
+        </div>
+        
+        <!-- Analytics Generation Flow -->
+        <div class="data-flow-card bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-4">Analytics Generation Flow</h3>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-blue-700">1</span>
+            </div>
+            <span>User Request</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>API Gateway</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-blue-700">2</span>
+            </div>
+            <span>Analytics Service</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Domain Logic</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-blue-700">3</span>
+            </div>
+            <span>Repository</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Database</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-blue-700">4</span>
+            </div>
+            <span>Data Processing</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Client Rendering</span>
+          </div>
+        </div>
+        
+        <!-- Recommendation Flow -->
+        <div class="data-flow-card bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-4">Recommendation Flow</h3>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-green-700">2</span>
+            </div>
+            <span>Data Access</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Algorithm Execution</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-green-700">3</span>
+            </div>
+            <span>Insight Generation</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Storage</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-green-700">4</span>
+            </div>
+            <span>Notification</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Display</span>
+          </div>
+              <span class="font-semibold text-green-700">1</span>
+            </div>
+            <span>Trigger</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Recommendation Engine</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+              <span class="font-semibold text-green-700">2</span>
+            </div>
+            <span>Data Access</span>
+            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+            <span>Algorithm Execution</span>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
