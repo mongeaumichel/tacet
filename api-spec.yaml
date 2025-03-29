@@ -1,0 +1,1415 @@
+openapi: 3.0.3
+info:
+  title: Marketing Analytics Platform API
+  description: API for marketing analytics platform with data insights and recommendations
+  version: 1.0.0
+servers:
+  - url: https://api.marketingplatform.example/v1
+    description: Production server
+  - url: https://staging-api.marketingplatform.example/v1
+    description: Staging server
+
+paths:
+  /users/me:
+    get:
+      summary: Get current user profile
+      description: Returns the profile of the currently authenticated user
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: Update current user profile
+      description: Updates attributes of the currently authenticated user
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /data-sources:
+    get:
+      summary: List all data sources
+      description: Returns a list of all data sources configured for the organization
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter by connection status
+          schema:
+            type: string
+            enum: [active, pending, error]
+        - name: type
+          in: query
+          description: Filter by data source type
+          schema:
+            type: string
+            enum: [shopify, google_analytics, klaviyo]
+      responses:
+        '200':
+          description: List of data sources retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DataSource'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    post:
+      summary: Create a new data source
+      description: Configure a new data source for the organization
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataSourceCreate'
+      responses:
+        '201':
+          description: Data source created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /data-sources/{dataSourceId}:
+    parameters:
+      - name: dataSourceId
+        in: path
+        required: true
+        schema:
+          type: string
+    
+    get:
+      summary: Get data source details
+      description: Returns details of a specific data source
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Data source details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    patch:
+      summary: Update data source
+      description: Update configuration of a specific data source
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataSourceUpdate'
+      responses:
+        '200':
+          description: Data source updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    delete:
+      summary: Delete data source
+      description: Remove a data source from the organization
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Data source deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /data-sources/{dataSourceId}/sync:
+    parameters:
+      - name: dataSourceId
+        in: path
+        required: true
+        schema:
+          type: string
+    
+    post:
+      summary: Trigger data synchronization
+      description: Manually trigger a sync from the data source
+      security:
+        - BearerAuth: []
+      responses:
+        '202':
+          description: Sync job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncJob'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /data-sources/{dataSourceId}/status:
+    parameters:
+      - name: dataSourceId
+        in: path
+        required: true
+        schema:
+          type: string
+    
+    get:
+      summary: Get data source health status
+      description: Returns the current health and sync status of a data source
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Data source status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSourceStatus'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+          
+  /analytics/metrics:
+    get:
+      summary: Get marketing metrics
+      description: Returns marketing performance metrics based on specified parameters
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: metrics
+          in: query
+          description: Comma-separated list of metrics to retrieve
+          required: true
+          schema:
+            type: string
+            example: "revenue,conversion_rate,average_order_value"
+        - name: dimensions
+          in: query
+          description: Comma-separated list of dimensions to segment by
+          schema:
+            type: string
+            example: "channel,campaign,device"
+        - name: start_date
+          in: query
+          description: Start date for the analysis period (inclusive)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: End date for the analysis period (inclusive)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: granularity
+          in: query
+          description: Time granularity for the results
+          schema:
+            type: string
+            enum: [day, week, month, quarter, year]
+            default: day
+        - name: filters
+          in: query
+          description: JSON-encoded filters to apply to the data
+          schema:
+            type: string
+            example: '{"channel":["email","social"],"device":["mobile"]}'
+      responses:
+        '200':
+          description: Metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /analytics/funnels:
+    get:
+      summary: Analyze conversion funnel
+      description: Returns conversion funnel analysis for the specified steps
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: steps
+          in: query
+          description: Comma-separated list of funnel steps in order
+          required: true
+          schema:
+            type: string
+            example: "page_view,add_to_cart,checkout,purchase"
+        - name: start_date
+          in: query
+          description: Start date for the analysis period (inclusive)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: End date for the analysis period (inclusive)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: segment_by
+          in: query
+          description: Dimension to segment the funnel by
+          schema:
+            type: string
+            example: "channel"
+        - name: filters
+          in: query
+          description: JSON-encoded filters to apply to the data
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Funnel analysis retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunnelResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /analytics/cohorts:
+    get:
+      summary: Perform cohort analysis
+      description: Returns cohort analysis for customer retention and behavior
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: cohort_type
+          in: query
+          description: Type of cohort to analyze
+          required: true
+          schema:
+            type: string
+            enum: [acquisition_date, first_purchase_date]
+            default: acquisition_date
+        - name: metric
+          in: query
+          description: Metric to analyze for the cohort
+          required: true
+          schema:
+            type: string
+            enum: [retention, revenue, orders, conversion_rate]
+            default: retention
+        - name: start_date
+          in: query
+          description: Start date for the cohort period (inclusive)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: End date for the cohort period (inclusive)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: interval
+          in: query
+          description: Time interval for cohort grouping
+          schema:
+            type: string
+            enum: [day, week, month, quarter]
+            default: month
+        - name: periods
+          in: query
+          description: Number of time periods to analyze
+          schema:
+            type: integer
+            default: 6
+      responses:
+        '200':
+          description: Cohort analysis retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CohortResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /analytics/attribution:
+    get:
+      summary: Get channel attribution
+      description: Returns attribution analysis for marketing channels
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: model
+          in: query
+          description: Attribution model to use
+          required: true
+          schema:
+            type: string
+            enum: [first_touch, last_touch, linear, position_based, time_decay]
+            default: last_touch
+        - name: conversion_event
+          in: query
+          description: Event to consider as conversion
+          required: true
+          schema:
+            type: string
+            example: "purchase"
+        - name: start_date
+          in: query
+          description: Start date for the analysis period (inclusive)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: End date for the analysis period (inclusive)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: channels
+          in: query
+          description: Comma-separated list of channels to include
+          schema:
+            type: string
+            example: "email,social,search,direct"
+      responses:
+        '200':
+          description: Attribution analysis retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /analytics/health:
+    get:
+      summary: Get data health metrics
+      description: Returns metrics about data completeness, freshness, and quality
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: source_id
+          in: query
+          description: Optional data source ID to filter by
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Data health metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataHealthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+          
+  /recommendations:
+    get:
+      summary: Get recommendations
+      description: Returns actionable marketing recommendations
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: category
+          in: query
+          description: Category of recommendations to retrieve
+          schema:
+            type: string
+            enum: [channel_optimization, campaign_ideas, audience_segmentation, content_suggestions, all]
+            default: all
+        - name: limit
+          in: query
+          description: Maximum number of recommendations to return
+          schema:
+            type: integer
+            default: 10
+        - name: status
+          in: query
+          description: Filter by recommendation status
+          schema:
+            type: string
+            enum: [new, viewed, implemented, dismissed, all]
+            default: all
+      responses:
+        '200':
+          description: Recommendations retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  
+  /recommendations/{recommendationId}:
+    parameters:
+      - name: recommendationId
+        in: path
+        required: true
+        schema:
+          type: string
+    
+    get:
+      summary: Get recommendation details
+      description: Returns detailed information about a specific recommendation
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Recommendation details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    patch:
+      summary: Update recommendation status
+      description: Update the status of a recommendation (e.g., mark as implemented)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [viewed, implemented, dismissed]
+                  description: New status for the recommendation
+                feedback:
+                  type: string
+                  description: Optional feedback about the recommendation
+              required: [status]
+      responses:
+        '200':
+          description: Recommendation status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+          
+  /config/dashboard:
+    get:
+      summary: Get dashboard configuration
+      description: Returns the configuration for the user's dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dashboard configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardConfig'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    put:
+      summary: Update dashboard configuration
+      description: Update the configuration for the user's dashboard
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardConfigUpdate'
+      responses:
+        '200':
+          description: Dashboard configuration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardConfig'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  
+  /config/metrics:
+    get:
+      summary: Get available metrics and dimensions
+      description: Returns all available metrics and dimensions for analytics
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Metrics and dimensions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsConfig'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  
+  /config/alerts:
+    get:
+      summary: Get configured alerts
+      description: Returns all configured alerts for the organization
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Alerts retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Alert'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    post:
+      summary: Create a new alert
+      description: Configure a new alert for the organization
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertCreate'
+      responses:
+        '201':
+          description: Alert created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the user
+        email:
+          type: string
+          format: email
+          description: User's email address
+        name:
+          type: string
+          description: User's full name
+        role:
+          type: string
+          enum: [owner, admin, analyst, viewer]
+          description: User's role in the organization
+        created_at:
+          type: string
+          format: date-time
+          description: When the user account was created
+        organization_id:
+          type: string
+          description: ID of the organization the user belongs to
+        last_login:
+          type: string
+          format: date-time
+          description: When the user last logged in
+      required: [id, email, name, role, organization_id]
+    
+    UserUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User's full name
+      minProperties: 1
+    
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Error message
+            details:
+              type: object
+              description: Additional error details
+      required: [error]
+
+    DataSource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the data source
+        name:
+          type: string
+          description: User-friendly name for the data source
+        type:
+          type: string
+          enum: [shopify, google_analytics, klaviyo]
+          description: Type of data source
+        status:
+          type: string
+          enum: [active, pending, error]
+          description: Current status of the data source connection
+        config:
+          type: object
+          description: Configuration details specific to the data source type
+        last_sync:
+          type: string
+          format: date-time
+          description: When the data was last synchronized
+        created_at:
+          type: string
+          format: date-time
+          description: When the data source was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the data source was last updated
+      required: [id, name, type, status, config]
+    
+    DataSourceCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User-friendly name for the data source
+        type:
+          type: string
+          enum: [shopify, google_analytics, klaviyo]
+          description: Type of data source
+        config:
+          type: object
+          description: Configuration details specific to the data source type
+      required: [name, type, config]
+    
+    DataSourceUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User-friendly name for the data source
+        config:
+          type: object
+          description: Configuration details specific to the data source type
+      minProperties: 1
+    
+    DataSourceStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the data source
+        status:
+          type: string
+          enum: [active, pending, error]
+          description: Current status of the data source connection
+        last_sync:
+          type: string
+          format: date-time
+          description: When the data was last synchronized
+        next_sync:
+          type: string
+          format: date-time
+          description: When the next automatic sync is scheduled
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Error message
+          description: Error details if status is 'error'
+        metrics:
+          type: object
+          properties:
+            records_synced:
+              type: integer
+              description: Number of records synced in the last run
+            sync_duration:
+              type: integer
+              description: Duration of last sync in seconds
+          description: Metrics about the sync process
+      required: [id, status]
+    
+    SyncJob:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the sync job
+        data_source_id:
+          type: string
+          description: ID of the data source being synced
+        status:
+          type: string
+          enum: [queued, in_progress, completed, failed]
+          description: Current status of the sync job
+        created_at:
+          type: string
+          format: date-time
+          description: When the sync job was created
+      required: [id, data_source_id, status, created_at]
+    
+    PaginationMeta:
+      type: object
+      properties:
+        current_page:
+          type: integer
+          description: Current page number
+        per_page:
+          type: integer
+          description: Number of items per page
+        total_items:
+          type: integer
+          description: Total number of items
+        total_pages:
+          type: integer
+          description: Total number of pages
+      required: [current_page, per_page, total_items, total_pages]
+      
+    MetricsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              dimensions:
+                type: object
+                description: Dimension values for this row
+              metrics:
+                type: object
+                description: Metric values for this row
+            required: [metrics]
+        meta:
+          type: object
+          properties:
+            time_range:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+            totals:
+              type: object
+              description: Aggregate values for the metrics
+      required: [data]
+    
+    FunnelResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            steps:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the funnel step
+                  count:
+                    type: integer
+                    description: Number of users/sessions at this step
+                  conversion_rate:
+                    type: number
+                    format: float
+                    description: Conversion rate from previous step
+                  overall_conversion_rate:
+                    type: number
+                    format: float
+                    description: Conversion rate from first step
+                required: [name, count]
+            segments:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Segment name
+                  steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        count:
+                          type: integer
+                        conversion_rate:
+                          type: number
+                          format: float
+                      required: [name, count]
+        meta:
+          type: object
+          properties:
+            time_range:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+            total_entries:
+              type: integer
+              description: Total entries at the first step
+      required: [data]
+    
+    CohortResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              cohort:
+                type: string
+                description: Cohort identifier (e.g., "2025-01")
+              size:
+                type: integer
+                description: Initial size of the cohort
+              periods:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    period:
+                      type: integer
+                      description: Period number
+                    value:
+                      type: number
+                      format: float
+                      description: Value for the selected metric
+                    percentage:
+                      type: number
+                      format: float
+                      description: Percentage relative to cohort size
+        meta:
+          type: object
+          properties:
+            cohort_type:
+              type: string
+            metric:
+              type: string
+            interval:
+              type: string
+            periods:
+              type: integer
+      required: [data]
+    
+    AttributionResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            model:
+              type: string
+              description: Attribution model used
+            channels:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Channel name
+                  conversions:
+                    type: number
+                    description: Attributed conversions
+                  revenue:
+                    type: number
+                    format: float
+                    description: Attributed revenue
+                  percentage:
+                    type: number
+                    format: float
+                    description: Percentage of total conversions
+                required: [name, conversions, percentage]
+            conversion_paths:
+              type: array
+              items:
+                type: object
+                properties:
+                  path:
+                    type: array
+                    items:
+                      type: string
+                  count:
+                    type: integer
+                  conversion_rate:
+                    type: number
+                    format: float
+                required: [path, count]
+        meta:
+          type: object
+          properties:
+            conversion_event:
+              type: string
+            total_conversions:
+              type: integer
+            time_range:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+      required: [data]
+    
+    DataHealthResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            completeness:
+              type: object
+              properties:
+                score:
+                  type: number
+                  format: float
+                  description: Overall data completeness score (0-100)
+                dimensions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      score:
+                        type: number
+                        format: float
+                      missing_count:
+                        type: integer
+            freshness:
+              type: object
+              properties:
+                score:
+                  type: number
+                  format: float
+                  description: Data freshness score (0-100)
+                last_update:
+                  type: string
+                  format: date-time
+                average_delay:
+                  type: integer
+                  description: Average delay in hours
+            quality_issues:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: [duplicate_data, inconsistency, outlier, missing_values]
+                  description:
+                    type: string
+                  affected_records:
+                    type: integer
+                  severity:
+                    type: string
+                    enum: [low, medium, high]
+        meta:
+          type: object
+          properties:
+            data_sources:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  type:
+                    type: string
+      required: [data]
+      
+    RecommendationsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recommendation'
+        meta:
+          type: object
+          properties:
+            total_count:
+              type: integer
+            new_count:
+              type: integer
+      required: [data]
+    
+    Recommendation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the recommendation
+        title:
+          type: string
+          description: Concise recommendation title
+        description:
+          type: string
+          description: Detailed explanation of the recommendation
+        category:
+          type: string
+          enum: [channel_optimization, campaign_ideas, audience_segmentation, content_suggestions]
+          description: Category of the recommendation
+        impact:
+          type: string
+          enum: [low, medium, high]
+          description: Estimated impact of implementing the recommendation
+        difficulty:
+          type: string
+          enum: [low, medium, high]
+          description: Estimated difficulty of implementing the recommendation
+        status:
+          type: string
+          enum: [new, viewed, implemented, dismissed]
+          description: Current status of the recommendation
+        supporting_data:
+          type: object
+          description: Supporting data and metrics for the recommendation
+        created_at:
+          type: string
+          format: date-time
+          description: When the recommendation was generated
+        updated_at:
+          type: string
+          format: date-time
+          description: When the recommendation was last updated
+      required: [id, title, description, category, impact, status, created_at]
+      
+    DashboardConfig:
+      type: object
+      properties:
+        widgets:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+                enum: [kpi, chart, table, funnel, recommendation]
+              title:
+                type: string
+              position:
+                type: object
+                properties:
+                  x:
+                    type: integer
+                  y:
+                    type: integer
+                  w:
+                    type: integer
+                  h:
+                    type: integer
+              config:
+                type: object
+                description: Widget-specific configuration
+            required: [id, type, position]
+        layout:
+          type: object
+          properties:
+            columns:
+              type: integer
+            padding:
+              type: integer
+        last_updated:
+          type: string
+          format: date-time
+      required: [widgets]
+    
+    DashboardConfigUpdate:
+      type: object
+      properties:
+        widgets:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+                enum: [kpi, chart, table, funnel, recommendation]
+              title:
+                type: string
+              position:
+                type: object
+                properties:
+                  x:
+                    type: integer
+                  y:
+                    type: integer
+                  w:
+                    type: integer
+                  h:
+                    type: integer
+              config:
+                type: object
+                description: Widget-specific configuration
+            required: [id, type, position]
+        layout:
+          type: object
+          properties:
+            columns:
+              type: integer
+            padding:
+              type: integer
+      required: [widgets]
+    
+    MetricsConfig:
+      type: object
+      properties:
+        metrics:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              category:
+                type: string
+              data_type:
+                type: string
+                enum: [integer, float, percentage, currency, duration]
+              aggregation:
+                type: string
+                enum: [sum, average, count, min, max]
+              formula:
+                type: string
+            required: [id, name, data_type]
+        dimensions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              category:
+                type: string
+              cardinality:
+                type: string
+                enum: [low, medium, high]
+            required: [id, name]
+      required: [metrics, dimensions]
+    
+    Alert:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        metric:
+          type: string
+        condition:
+          type: string
+          enum: [above, below, changes_by]
+        threshold:
+          type: number
+        frequency:
+          type: string
+          enum: [realtime, hourly, daily, weekly]
+        channels:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [email, slack, webhook]
+              config:
+                type: object
+        status:
+          type: string
+          enum: [active, paused]
+        created_at:
+          type: string
+          format: date-time
+      required: [id, name, metric, condition, threshold, frequency, channels, status]
+    
+    AlertCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        metric:
+          type: string
+        condition:
+          type: string
+          enum: [above, below, changes_by]
+        threshold:
+          type: number
+        frequency:
+          type: string
+          enum: [realtime, hourly, daily, weekly]
+        channels:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [email, slack, webhook]
+              config:
+                type: object
+      required: [name, metric, condition, threshold, frequency, channels]
+      
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
